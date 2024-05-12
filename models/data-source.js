@@ -9,7 +9,7 @@ const appDataSource = new DataSource({
   database: process.env.TYPEORM_DATABASE,  
   entities: [],
   synchronize: true, 
-  logging: process.env.TYPEORM_LOGGING === 'TRUE',  // 로깅 활성화 여부
+  logging: process.env.TYPEORM_LOGGING === 'false',  // 로깅 활성화 여부
 });
 
 module.exports = { appDataSource };
