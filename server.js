@@ -13,7 +13,7 @@ const start = async () => {
       res.status(200).json({ message: "pong" });
     });
     app.listen(PORT, () =>
-      console.log(`🐹 Server is listening on ${PORT}�ⅴ�ⅴ`)
+      console.log(`🐹 Server is listening on ${PORT}🥥🥥`)
     );
   } catch (err) {
     console.error(err);
