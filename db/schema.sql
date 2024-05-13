@@ -281,6 +281,8 @@ CREATE TABLE `user_statuses` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `name` char(50) NOT NULL,
   `gender` char(8) NOT NULL,
   `birth` datetime NOT NULL,
@@ -291,6 +293,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
   KEY `users_users_status_id_FK` (`user_status_id`),
   KEY `users_belonged_unit_id_FK` (`belonged_unit_id`),
   CONSTRAINT `users_belonged_unit_id_FK` FOREIGN KEY (`belonged_unit_id`) REFERENCES `units` (`id`),
