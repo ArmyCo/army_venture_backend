@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
 
@@ -36,9 +37,17 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Invalid password!" });
         }
 
+        // 토큰 생성
+        const token = jwt.sign(
+            { id: user.id, username: user.username },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
         res.status(200).json({
             message: "User logged in successfully!",
-            userId: user.id
+            userId: user.id,
+            token: token  // 클라이언트에 토큰 전달
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
