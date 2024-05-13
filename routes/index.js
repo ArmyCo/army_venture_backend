@@ -1,6 +1,13 @@
 const express = require('express');
+
+const placeRouter = require('./placeRouter');
+
 const router = express.Router();
 
-router.use('/users', require('./userRoutes'));
+router.get('/', (req, res) => {
+    res.send('Hello World!');});
 
-module.exports = router;
+router.use('/places', placeRouter.router);
+router.use('/users', require('./userRoutes'));
+  
+ module.exports = router;
