@@ -6,6 +6,6 @@ router.get('/', (req, res) => {
     res.send('Hello World!');});
 
 router.use('/places', placeRouter.router);
-// router.use('/users', require('./userRoutes'));
+router.use('/users', require('./userRoutes'));
   
 module.exports = router;
