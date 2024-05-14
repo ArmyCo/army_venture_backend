@@ -2,6 +2,7 @@
 CREATE TABLE places(
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(300) NOT NULL,
+  TEL varchar(30),
   detail VARCHAR(1000),
   address VARCHAR(3000) NOT NULL,
   place_type_id INT NOT NULL,
