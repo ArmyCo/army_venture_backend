@@ -20,7 +20,7 @@ const getPlaceImagesByPlaceId = async (placeId) => {
       [placeId]
     )
     return placeImages;
-}
+};
 
 const getReviewByPlaceId = async (placeId) => {
     const reviewDetail = await appDataSource.query(
@@ -49,8 +49,44 @@ const getReviewByPlaceId = async (placeId) => {
     return reviewDetail;
 };
 
+const getCloseDaysByPlaceId = async (placeId) => {
+    const closeDays = await appDataSource.query(
+      `
+      SELECT close_day FROM places
+      WHERE place_id = ?
+      `,
+      [placeId]
+    )
+    return closeDays;
+};
+
+const checkPlaceCloseInHollidays = async (placeId) => {
+    const holidays = await appDataSource.query(
+      `
+      SELECT close_at_holildays FROM places
+      WHERE place_id = ?
+      `,
+      [placeId]
+    )
+    return holidays;
+}
+
+const getHollidaysByPlaceId = async (placeId) => {
+    const holidays = await appDataSource.query(
+      `
+      SELECT * FROM holidays
+      WHERE place_id = ?
+      `,
+      [placeId]
+    )
+    return holidays;
+}
+
 module.exports = {
     getPlaceById,
     getPlaceImagesByPlaceId,
-    getReviewByPlaceId
+    getReviewByPlaceId,
+    getCloseDaysByPlaceId,
+    checkPlaceCloseInHollidays,
+    getHollidaysByPlaceId
 }
