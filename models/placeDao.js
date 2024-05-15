@@ -39,7 +39,7 @@ const getReviewByPlaceId = async (placeId) => {
             )
           ) AS reviewScores
         FROM review_scores rs
-        JOIN rating_criteria rc ON rs.rating_criteria_id = rc.id
+        JOIN rating_criterias rc ON rs.rating_criteria_id = rc.id
         GROUP BY rs.review_id
       ) AS reviewScores ON pr.id = reviewScores.review_id
       WHERE pr.place_id = ?
