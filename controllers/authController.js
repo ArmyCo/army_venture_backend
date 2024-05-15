@@ -1,4 +1,5 @@
 const axios = require('axios');
+const userService = require('../services/userService');
 const {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
@@ -51,7 +52,26 @@ const signupRedirect = async (req, res) => {
       },
     });
 
-    res.json(userResponse.data);
+    const { email, name } = userResponse.data;
+
+    let user = await userService.getUserByEmail(email);
+
+    if (!user) {
+      user = await userService.createUser({
+        email,
+        password: 'oauth2password', // 기본 비밀번호 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        name: name || '',
+        gender: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        birth: new Date(), // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        user_army_number: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        user_status_id: 1, // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        phone_number: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        belonged_unit_id: 1, // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        created_at: new Date(),
+      });
+    }
+
+    res.json(user);
   } catch (error) {
     console.error('OAuth 과정 중 오류 발생', error);
     res.status(500).send('인증 실패');

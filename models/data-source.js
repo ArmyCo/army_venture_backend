@@ -1,4 +1,5 @@
 const { DataSource } = require('typeorm');
+const User = require('./userEntity');
 
 const appDataSource = new DataSource({
   type: 'mysql',  // MySQL 데이터베이스 사용
@@ -7,7 +8,7 @@ const appDataSource = new DataSource({
   username: process.env.TYPEORM_USERNAME,  
   password: process.env.TYPEORM_PASSWORD,  
   database: process.env.TYPEORM_DATABASE,  
-  entities: [],
+  entities: [User],
   synchronize: true, 
   logging: process.env.TYPEORM_LOGGING === 'false',  // 로깅 활성화 여부
 });
