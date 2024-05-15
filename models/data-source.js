@@ -1,4 +1,5 @@
 const { DataSource } = require('typeorm');
+const User = require('./userEntity');
 
 const appDataSource = new DataSource({
   type: 'mysql',  // MySQL 데이터베이스 사용
