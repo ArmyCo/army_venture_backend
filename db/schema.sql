@@ -83,6 +83,26 @@ CREATE TABLE `place_images` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `place_rating_criterias`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `place_rating_criterias` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `place_id` int NOT NULL,
+  `rating_criteria_id` int NOT NULL,
+  `review_count` int NOT NULL DEFAULT '0',
+  `score_avg` decimal(3,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `place_rating_criterias_place_id_FK` (`place_id`),
+  KEY `place_rating_criterias_rating_criteria_id_FK` (`rating_criteria_id`),
+  CONSTRAINT `place_rating_criterias_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`),
+  CONSTRAINT `place_rating_criterias_rating_criteria_id_FK` FOREIGN KEY (`rating_criteria_id`) REFERENCES `rating_criterias` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `place_reviews`
 --
 
@@ -127,6 +147,7 @@ CREATE TABLE `place_types` (
 CREATE TABLE `places` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(300) NOT NULL,
+  `TEL` varchar(30) DEFAULT NULL,
   `detail` varchar(1000) DEFAULT NULL,
   `address` varchar(3000) NOT NULL,
   `place_type_id` int NOT NULL,
@@ -164,12 +185,12 @@ CREATE TABLE `places_in_user_courses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `rating_criteria`
+-- Table structure for table `rating_criterias`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `rating_criteria` (
+CREATE TABLE `rating_criterias` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rating_title` varchar(300) NOT NULL,
   PRIMARY KEY (`id`)
@@ -185,12 +206,12 @@ CREATE TABLE `rating_criteria` (
 CREATE TABLE `review_scores` (
   `id` int NOT NULL AUTO_INCREMENT,
   `review_id` int NOT NULL,
-  `rating_criteria_id` int NOT NULL,
+  `place_rating_criteria_id` int NOT NULL,
   `score` decimal(3,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `review_scores_review_id_FK` (`review_id`),
-  KEY `review_scores_rating_criteria_id_FK` (`rating_criteria_id`),
-  CONSTRAINT `review_scores_rating_criteria_id_FK` FOREIGN KEY (`rating_criteria_id`) REFERENCES `rating_criteria` (`id`),
+  KEY `review_scores_place_rating_criteria_id_FK` (`place_rating_criteria_id`),
+  CONSTRAINT `review_scores_place_rating_criteria_id_FK` FOREIGN KEY (`place_rating_criteria_id`) REFERENCES `rating_criterias` (`id`),
   CONSTRAINT `review_scores_review_id_FK` FOREIGN KEY (`review_id`) REFERENCES `place_reviews` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -336,5 +357,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20240512181406'),
   ('20240512181640'),
   ('20240512181646'),
-  ('20240512181931');
+  ('20240512181931'),
+  ('20240515140423');
 UNLOCK TABLES;
