@@ -4,8 +4,8 @@ const placeRouter = require('./placeRouter');
 const eventRouter = require('./eventRouter');
 
 router.get('/', (req, res) => {
-    res.send('Hello World!');});
-
+    res.send('Hello World!');
+  });
 router.use('/places', placeRouter.router);
 router.use('/events', eventRouter.router);
   

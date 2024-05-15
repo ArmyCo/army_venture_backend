@@ -9,7 +9,7 @@ const getPlaceDetails = catchAsync(async (req, res) => {
   return res.status(200).json({ result });
 });
 
-const getHollidays = catchAsync(async (req, res) => {
+const getPlaceHollidays = catchAsync(async (req, res) => {
   const { placeId } = req.params;
 
   const result = await placeService.gettingHolidays(placeId);
@@ -19,5 +19,5 @@ const getHollidays = catchAsync(async (req, res) => {
 
 module.exports = {
   getPlaceDetails,
-  getHollidays
+  getPlaceHollidays
 };
