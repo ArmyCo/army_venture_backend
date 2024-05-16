@@ -10,6 +10,25 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `course_likes`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_likes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `course_id` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `course_likes_user_id_FK` (`user_id`),
+  KEY `course_likes_course_id_FK` (`course_id`),
+  CONSTRAINT `course_likes_course_id_FK` FOREIGN KEY (`course_id`) REFERENCES `user_courses` (`id`),
+  CONSTRAINT `course_likes_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `event_images`
 --
 
@@ -271,6 +290,7 @@ CREATE TABLE `units` (
 CREATE TABLE `user_courses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `likes` int DEFAULT '0',
   `course_title` varchar(255) DEFAULT NULL,
   `with_who_id` int NOT NULL,
   `description` varchar(4500) DEFAULT NULL,
@@ -375,5 +395,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20240512181640'),
   ('20240512181646'),
   ('20240512181931'),
-  ('20240515140423');
+  ('20240515140423'),
+  ('20240516032901');
 UNLOCK TABLES;

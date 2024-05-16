@@ -2,6 +2,7 @@
 CREATE TABLE user_courses(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+	  likes INT DEFAULT 0,
     course_title VARCHAR(255),
     with_who_id INT NOT NULL,
     description VARCHAR(4500),
