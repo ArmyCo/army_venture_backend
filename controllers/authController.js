@@ -78,9 +78,26 @@ const signupRedirect = async (req, res) => {
   }
 };
 
+const googleLogin = async (req, res) => {
+  try {
+    const googleUserData = req.body; // 프론트엔드에서 구글 OAuth로 받아온 사용자 데이터
+
+    const { user, token } = await userService.googleLogin(googleUserData);
+
+    res.status(200).json({
+      message: '로그인 성공',
+      user,
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   login,
   signup,
   loginRedirect,
   signupRedirect,
+  googleLogin
 };
