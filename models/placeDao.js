@@ -56,10 +56,55 @@ const getHollidaysByPlaceId = async (placeId) => {
     return holidays;
 }
 
+const addReview = async (userId, placeId, title, content, visitedDate) => {
+  await appDataSource.query(
+    `INSERT INTO place_reviews (user_id, place_id, title, content, visited_date) 
+    VALUES (?, ?, ?, ?, ?)`,
+    [userId, placeId, title, content, visitedDate]
+  );
+};
+
+const getReviewScores = async (reviewId) => {
+  const scores = await appDataSource.query(
+    `SELECT score FROM review_scores WHERE review_id = ?`,
+    [reviewId]
+  );
+  return scores;
+};
+
+const calculateReviewRating = async (placeId) => {
+  const scores = await appDataSource.query(
+    `SELECT score FROM review_scores 
+    JOIN place_reviews ON review_scores.review_id = place_reviews.id 
+    WHERE place_reviews.place_id = ?`,
+    [placeId]
+  );
+
+  let totalScore = 0;
+  let reviewCount = scores.length;
+
+  scores.forEach(score => {
+      totalScore += parseFloat(score.score);
+  });
+
+  const averageScore = totalScore / reviewCount;
+
+  if (averageScore <= 2.5) {
+      return '별로예요';
+  } else if (averageScore <= 3.5) {
+      return '보통';
+  } else {
+      return '좋아요';
+  }
+};
+
 module.exports = {
     getPlaceById,
     getPlaceImagesByPlaceId,
     getRatingsByPlaceId,
     checkPlaceCloseInHollidays,
-    getHollidaysByPlaceId
+    getHollidaysByPlaceId,
+    addReview,
+    getReviewScores,
+    calculateReviewRating
 }
