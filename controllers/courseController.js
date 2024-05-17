@@ -52,10 +52,24 @@ const updateCourseDetail = catchAsync(async (req, res) => {
   return res.status(200).json({ message: '코스 정보가 성공적으로 수정되었습니다.'});
 });
 
+const deleteCourse = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { courseId } = req.params;
+
+  if (!userId || !courseId) {
+    return res.status(400).json({ message: "KEY_MISSING" });
+  }
+
+  await courseService.deletingCourse(userId, courseId);
+  
+  return res.status(200).json({ message: '코스가 성공적으로 삭제되었습니다.'});
+});
+
 module.exports = {
   getAllCourses,
   getCourseDetails,
   createCourse,
   addPlaceInCourse,
-  updateCourseDetail
+  updateCourseDetail,
+  deleteCourse
 };
