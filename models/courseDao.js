@@ -34,10 +34,85 @@ const getPlacesesByCourseId = async (courseId) => {
     return places;
 }
 
+const createCourse = async (userId, course_title, with_who_id, description) => {
+    const result = await appDataSource.query(
+      `
+      INSERT INTO user_courses (user_id, course_title, with_who_id, description) 
+      VALUES (?, ?, ?, ?)
+      `,
+      [userId, course_title, with_who_id, description]
+    )
+    return result.insertId;;
+}
 
+const addPlaceInCourse = async (courseId, placeId, placeLike) => {
+    const result = await appDataSource.query(
+      `
+      INSERT INTO places_in_user_courses (user_courses_id, place_id, place_like) 
+      VALUES (?, ?, ?)
+      `,
+      [courseId, placeId, placeLike]
+    )
+    return result.insertId;
+}
+
+const userCourseCheck = async (userId, courseId) => {
+    const [checkOwner] = await appDataSource.query(
+      `
+      SELECT course_title
+      FROM user_courses
+      WHERE user_id = ? AND id = ?
+      `,
+      [userId, courseId]
+    )
+
+    if (!checkOwner){
+      const error = new Error("INVALID_ACCESS_TO_THIS_COURSE");
+      error.statusCode = 400;
+      throw error;
+    }
+    return 1;
+}
+
+const updateCourseDetail = async (courseId, course_title, with_who_id, description) => {
+    await appDataSource.query(
+      `
+      UPDATE user_courses
+      SET course_title = ?, with_who_id = ?, description = ?
+      WHERE id = ?
+      `,
+      [course_title, with_who_id, description, courseId]
+    )
+}
+
+const deleteCourse = async (courseId) => {
+    await appDataSource.query(
+      `
+      DELETE FROM user_courses
+      WHERE id = ?
+      `,
+      [courseId]
+    )
+}
+
+const deletePlaceInCourse = async (courseId, placeId) => {
+    await appDataSource.query(
+      `
+      DELETE FROM places_in_user_courses
+      WHERE user_courses_id = ? AND place_id = ?
+      `,
+      [courseId, placeId]
+    )
+}
 
 module.exports = {
     getAllCourses,
     getCourseById,
-    getPlacesesByCourseId
+    getPlacesesByCourseId,
+    createCourse,
+    addPlaceInCourse,
+    userCourseCheck,
+    updateCourseDetail,
+    deleteCourse,
+    deletePlaceInCourse
 }
