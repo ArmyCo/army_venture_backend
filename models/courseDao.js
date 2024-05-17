@@ -34,10 +34,32 @@ const getPlacesesByCourseId = async (courseId) => {
     return places;
 }
 
+const createCourse = async (userId, course_title, with_who_id, description) => {
+    const courseId = await appDataSource.query(
+      `
+      INSERT INTO user_courses (user_id, course_title, with_who_id, description) 
+      VALUES (?, ?, ?, ?)
+      `,
+      [userId, course_title, with_who_id, description]
+    )
+    return courseId.insertId;;
+}
 
+const addPlaceInCourse = async (courseId, placeId) => {
+    const result = await appDataSource.query(
+      `
+      INSERT INTO places_in_user_courses (user_courses_id, place_id) 
+      VALUES (?, ?)
+      `,
+      [courseId, placeId]
+    )
+    return result;
+}
 
 module.exports = {
     getAllCourses,
     getCourseById,
-    getPlacesesByCourseId
+    getPlacesesByCourseId,
+    createCourse,
+    addPlaceInCourse
 }
