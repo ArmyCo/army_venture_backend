@@ -5,11 +5,15 @@ const { loginRequired } = require('../utils/auth');
 
 router.get('/all', loginRequired, courseController.getAllCourses);
 router.get('/:courseId', loginRequired, courseController.getCourseDetails);
-// router.post('/:courseId/likes', loginRequired, courseController.addCourseLike);
+
 router.post('/', loginRequired, courseController.createCourse);
 router.post('/:courseId/place', loginRequired, courseController.addPlaceInCourse);
+router.post('/:courseId/likes', loginRequired, courseController.addCourseLike);
+
 router.patch('/:courseId', loginRequired, courseController.updateCourseDetail);
+
 router.delete('/:courseId', loginRequired, courseController.deleteCourse);
 router.delete('/:courseId/place/:placeId', loginRequired, courseController.deletePlaceInCourse);
+router.delete('/:courseId/likes', loginRequired, courseController.deleteCourseLike);
 
 module.exports = { router };

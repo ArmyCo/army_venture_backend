@@ -67,9 +67,23 @@ const userCourseCheck = async (userId, courseId) => {
     )
 
     if (!checkOwner){
-      const error = new Error("INVALID_ACCESS_TO_THIS_COURSE");
-      error.statusCode = 400;
-      throw error;
+      return 0;
+    }
+    return 1;
+}
+
+const userLikedCheck = async (userId, courseId) => {
+    const [checkLiked] = await appDataSource.query(
+      `
+      SELECT created_at
+      FROM course_likes
+      WHERE user_id = ? AND course_id = ?
+      `,
+      [userId, courseId]
+    )
+
+    if (!checkLiked){
+      return 0;
     }
     return 1;
 }
@@ -105,6 +119,69 @@ const deletePlaceInCourse = async (courseId, placeId) => {
     )
 }
 
+const addCourseLike = async (userId, courseId) => {
+  const queryRunner = appDataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+  try{
+    await queryRunner.query(
+      `
+      UPDATE user_courses
+      SET likes += 1
+      WHERE id = ?
+      `,
+      [courseId]
+    );
+
+    await queryRunner.query(
+      `
+      INSERT INTO course_likes (user_id, course_id) 
+      VALUES (?, ?)
+      `,
+      [userId, courseId]
+    );
+    await queryRunner.commitTransaction();
+  } catch(err){
+    await queryRunner.rollbackTransaction();
+    err.statusCode = 500;
+    throw err;
+  } finally {
+    await queryRunner.release();
+  }
+}
+
+const deleteCourseLike = async (userId, courseId) => {
+  const queryRunner = appDataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+  try{
+    await queryRunner.query(
+      `
+      UPDATE user_courses
+      SET likes -= 1
+      WHERE id = ?
+      `,
+      [courseId]
+    );
+
+    await queryRunner.query(
+      `
+      DELETE FROM course_likes
+      WHERE user_id = ? AND course_id = ?
+      `,
+      [userId, courseId]
+    );
+    await queryRunner.commitTransaction();
+  } catch(err){
+    await queryRunner.rollbackTransaction();
+    err.statusCode = 500;
+    throw err;
+  } finally {
+    await queryRunner.release();
+  }
+}
+
+
 module.exports = {
     getAllCourses,
     getCourseById,
@@ -112,7 +189,10 @@ module.exports = {
     createCourse,
     addPlaceInCourse,
     userCourseCheck,
+    userLikedCheck,
     updateCourseDetail,
     deleteCourse,
-    deletePlaceInCourse
+    deletePlaceInCourse,
+    addCourseLike,
+    deleteCourseLike
 }
