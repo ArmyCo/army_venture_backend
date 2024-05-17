@@ -31,13 +31,13 @@ const googleLogin = async (googleUserData) => {
   if (!user) {
     user = await createUser({
       email: googleUserData.email,
-      name: googleUserData.name,
-      gender: googleUserData.gender,
-      birth: new Date(googleUserData.birth), // 구글에서 받아오는 생일 데이터 형식에 맞춰 변환 필요
-      user_army_number: googleUserData.user_army_number,
-      user_status_id: googleUserData.user_status_id,
-      phone_number: googleUserData.phone_number,
-      belonged_unit_id: googleUserData.belonged_unit_id,
+      name: googleUserData.name || '',
+      gender: googleUserData.gender || 'unknown',
+      birth: googleUserData.birth ? new Date(googleUserData.birth) : new Date(), // 구글에서 받아오는 생일 데이터 형식에 맞춰 변환 필요
+      user_army_number: googleUserData.user_army_number || 'unknown',
+      user_status_id: googleUserData.user_status_id || 1,
+      phone_number: googleUserData.phone_number || 'unknown',
+      belonged_unit_id: googleUserData.belonged_unit_id || 1,
     });
   }
 
