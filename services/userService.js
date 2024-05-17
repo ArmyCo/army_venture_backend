@@ -9,35 +9,32 @@ const generateToken = (user) => {
     email: user.email,
   };
   
-  return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: '1h',
-  });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
-const createUser = async (userData) => {
-  const user = User.create(userData);
-  await User.save(user);
-  return user;
-};
-
+// 사용자 정보 조회
 const getUserByEmail = async (email) => {
+  console.log(`이메일로 사용자 조회: ${email}`);
   return await User.findOne({ where: { email } });
 };
 
-// 구글 OAuth 로그인 후 JWT 토큰 발급
-const googleLogin = async (googleUserData) => {
-  let user = await getUserByEmail(googleUserData.email);
+// 사용자 생성
+const createUser = async (userData) => {
+  const newUser = User.create(userData);
+  await User.save(newUser);
+  return newUser;
+};
 
+// 구글 로그인 로직
+const googleLogin = async (googleUserData) => {
+  console.log(`구글 로그인 시도: ${googleUserData.email}`);
+  let user = await getUserByEmail(googleUserData.email);
   if (!user) {
+    console.log('사용자가 존재하지 않으므로 새로 생성합니다:', googleUserData.email);
     user = await createUser({
       email: googleUserData.email,
-      name: googleUserData.name,
-      gender: googleUserData.gender,
-      birth: new Date(googleUserData.birth), // 구글에서 받아오는 생일 데이터 형식에 맞춰 변환 필요
-      user_army_number: googleUserData.user_army_number,
-      user_status_id: googleUserData.user_status_id,
-      phone_number: googleUserData.phone_number,
-      belonged_unit_id: googleUserData.belonged_unit_id,
+      name: googleUserData.name, // 가정: 클라이언트에서 이름을 제공
+      password: 'oauth2password', // 기본 비밀번호 설정
     });
   }
 
@@ -46,7 +43,8 @@ const googleLogin = async (googleUserData) => {
 };
 
 module.exports = {
-  createUser,
   getUserByEmail,
+  createUser,
   googleLogin,
+  generateToken,
 };
