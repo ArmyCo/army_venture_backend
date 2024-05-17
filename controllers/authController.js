@@ -27,36 +27,11 @@ const signup = (req, res) => {
   res.redirect(url);
 };
 
-const loginRedirect = async (req, res) => {
+const loginRedirect = (req, res) => {
   const { code } = req.query;
   console.log(`code: ${code}`);
-
-  try {
-    const tokenResponse = await axios.post(GOOGLE_TOKEN_URL, {
-      code,
-      client_id: GOOGLE_CLIENT_ID,
-      client_secret: GOOGLE_CLIENT_SECRET,
-      redirect_uri: GOOGLE_LOGIN_REDIRECT_URI,
-      grant_type: 'authorization_code',
-    });
-
-    const userResponse = await axios.get(GOOGLE_USERINFO_URL, {
-      headers: {
-        Authorization: `Bearer ${tokenResponse.data.access_token}`,
-      },
-    });
-
-    const { email, name } = userResponse.data;
-
-    const { user, token } = await userService.googleLogin({ email, name }); // 추가: 구글 로그인 후 사용자 생성 및 토큰 발급
-
-    res.json({ user, token });
-  } catch (error) {
-    console.error('OAuth 과정 중 오류 발생', error);
-    res.status(500).send('인증 실패');
-  }
+  res.send('ok');
 };
-
 
 const signupRedirect = async (req, res) => {
   const { code } = req.query;
@@ -79,9 +54,24 @@ const signupRedirect = async (req, res) => {
 
     const { email, name } = userResponse.data;
 
-    const { user, token } = await userService.googleLogin({ email, name }); // 추가: 구글 로그인 후 사용자 생성 및 토큰 발급
+    let user = await userService.getUserByEmail(email);
 
-    res.json({ user, token });
+    if (!user) {
+      user = await userService.createUser({
+        email,
+        password: 'oauth2password', // 기본 비밀번호 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        name: name || '',
+        gender: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        birth: new Date(), // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        user_army_number: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        user_status_id: 1, // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        phone_number: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        belonged_unit_id: 1, // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        created_at: new Date(),
+      });
+    }
+
+    res.json(user);
   } catch (error) {
     console.error('OAuth 과정 중 오류 발생', error);
     res.status(500).send('인증 실패');
