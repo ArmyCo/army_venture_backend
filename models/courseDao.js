@@ -57,7 +57,7 @@ const addPlaceInCourse = async (courseId, placeId, placeLike) => {
 }
 
 const userCourseCheck = async (userId, courseId) => {
-    await appDataSource.query(
+    const [checkOwner] = await appDataSource.query(
       `
       SELECT course_title
       FROM user_courses
@@ -65,11 +65,17 @@ const userCourseCheck = async (userId, courseId) => {
       `,
       [userId, courseId]
     )
+
+    if (!checkOwner){
+      const error = new Error("INVALID_ACCESS_TO_THIS_COURSE");
+      error.statusCode = 400;
+      throw error;
+    }
     return 1;
 }
 
 const updateCourseDetail = async (courseId, course_title, with_who_id, description) => {
-     await appDataSource.query(
+    await appDataSource.query(
       `
       UPDATE user_courses
       SET course_title = ?, with_who_id = ?, description = ?

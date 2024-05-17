@@ -31,7 +31,7 @@ const updatingCourseDetail = async (userId, courseId, course_title, with_who_id,
   if(usercheck != 1) {
     return { message: "INVALID_ACCESS_TO_THIS_COURSE" };
   }else{
-    await courseDao.updateCourseDetail(userId, courseId, course_title, with_who_id, description);
+    await courseDao.updateCourseDetail(courseId, course_title, with_who_id, description);
   }
 }
 

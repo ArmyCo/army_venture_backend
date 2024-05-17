@@ -42,7 +42,7 @@ const updateCourseDetail = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { courseId } = req.params;
   const { course_title, with_who_id, description } = req.body;
-
+  
   if (!userId || !courseId || !course_title || !with_who_id || !description) {
     return res.status(400).json({ message: "KEY_MISSING" });
   }
