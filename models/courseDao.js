@@ -35,14 +35,14 @@ const getPlacesesByCourseId = async (courseId) => {
 }
 
 const createCourse = async (userId, course_title, with_who_id, description) => {
-    const courseId = await appDataSource.query(
+    const result = await appDataSource.query(
       `
       INSERT INTO user_courses (user_id, course_title, with_who_id, description) 
       VALUES (?, ?, ?, ?)
       `,
       [userId, course_title, with_who_id, description]
     )
-    return courseId.insertId;;
+    return result.insertId;;
 }
 
 const addPlaceInCourse = async (courseId, placeId, placeLike) => {
@@ -53,13 +53,39 @@ const addPlaceInCourse = async (courseId, placeId, placeLike) => {
       `,
       [courseId, placeId, placeLike]
     )
-    return result;
+    return result.insertId;
 }
+
+const userCourseCheck = async (userId, courseId) => {
+    await appDataSource.query(
+      `
+      SELECT course_title
+      FROM user_courses
+      WHERE user_id = ? AND id = ?
+      `,
+      [userId, courseId]
+    )
+    return 1;
+}
+
+const updateCourseDetail = async (courseId, course_title, with_who_id, description) => {
+     await appDataSource.query(
+      `
+      UPDATE user_courses
+      SET course_title = ?, with_who_id = ?, description = ?
+      WHERE id = ?
+      `,
+      [course_title, with_who_id, description, courseId]
+    )
+}
+
 
 module.exports = {
     getAllCourses,
     getCourseById,
     getPlacesesByCourseId,
     createCourse,
-    addPlaceInCourse
+    addPlaceInCourse,
+    userCourseCheck,
+    updateCourseDetail
 }
