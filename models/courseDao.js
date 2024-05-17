@@ -45,13 +45,13 @@ const createCourse = async (userId, course_title, with_who_id, description) => {
     return courseId.insertId;;
 }
 
-const addPlaceInCourse = async (courseId, placeId) => {
+const addPlaceInCourse = async (courseId, placeId, placeLike) => {
     const result = await appDataSource.query(
       `
-      INSERT INTO places_in_user_courses (user_courses_id, place_id) 
-      VALUES (?, ?)
+      INSERT INTO places_in_user_courses (user_courses_id, place_id, place_like) 
+      VALUES (?, ?, ?)
       `,
-      [courseId, placeId]
+      [courseId, placeId, placeLike]
     )
     return result;
 }

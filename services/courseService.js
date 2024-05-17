@@ -17,8 +17,8 @@ const creatingCourse = async (userId, course_title, with_who_id, description) =>
   return { createdCourseId: courseId };
 }
 
-const addingPlaceInCourse = async (courseId, placeId) => {
-  const result = await courseDao.addPlaceInCourse(courseId, placeId);
+const addingPlaceInCourse = async (courseId, placeId, placeLike) => {
+  const result = await courseDao.addPlaceInCourse(courseId, placeId, placeLike);
 
   return result;
 }

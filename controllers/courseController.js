@@ -24,9 +24,14 @@ const createCourse = catchAsync(async (req, res) => {
 });
 
 const addPlaceInCourse = catchAsync(async (req, res) => {
-  const { courseId, placeId } = req.body;
+  const { courseId } = req.params;
+  const { placeId, placeLike } = req.body;
 
-  await courseService.addingPlaceInCourse(courseId, placeId);
+  if (!courseId || !placeId || !placeLike) {
+    return res.status(400).json({ message: "KEY_MISSING" });
+  }
+
+  await courseService.addingPlaceInCourse(courseId, placeId, placeLike);
   return res.status(201).json({ message: '장소가 성공적으로 코스에 추가되었습니다.'});
 });
 
