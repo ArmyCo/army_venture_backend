@@ -10,6 +10,6 @@ router.post('/', loginRequired, courseController.createCourse);
 router.post('/:courseId/place', loginRequired, courseController.addPlaceInCourse);
 router.patch('/:courseId', loginRequired, courseController.updateCourseDetail);
 router.delete('/:courseId', loginRequired, courseController.deleteCourse);
-// router.delete('/:courseId/place/:placeId', loginRequired, courseController.deletePlaceInCourse);
+router.delete('/:courseId/place/:placeId', loginRequired, courseController.deletePlaceInCourse);
 
 module.exports = { router };

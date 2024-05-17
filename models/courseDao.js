@@ -79,6 +79,25 @@ const updateCourseDetail = async (courseId, course_title, with_who_id, descripti
     )
 }
 
+const deleteCourse = async (courseId) => {
+    await appDataSource.query(
+      `
+      DELETE FROM user_courses
+      WHERE id = ?
+      `,
+      [courseId]
+    )
+}
+
+const deletePlaceInCourse = async (courseId, placeId) => {
+    await appDataSource.query(
+      `
+      DELETE FROM places_in_user_courses
+      WHERE user_courses_id = ? AND place_id = ?
+      `,
+      [courseId, placeId]
+    )
+}
 
 module.exports = {
     getAllCourses,
@@ -87,5 +106,7 @@ module.exports = {
     createCourse,
     addPlaceInCourse,
     userCourseCheck,
-    updateCourseDetail
+    updateCourseDetail,
+    deleteCourse,
+    deletePlaceInCourse
 }

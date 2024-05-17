@@ -65,11 +65,25 @@ const deleteCourse = catchAsync(async (req, res) => {
   return res.status(200).json({ message: '코스가 성공적으로 삭제되었습니다.'});
 });
 
+const deletePlaceInCourse = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { courseId, placeId } = req.params;
+
+  if (!userId || !courseId || !placeId) {
+    return res.status(400).json({ message: "KEY_MISSING" });
+  }
+
+  await courseService.deletingPlaceInCourse(userId, courseId, placeId);
+  
+  return res.status(200).json({ message: '장소가 성공적으로 코스에서 삭제되었습니다.'});
+});
+
 module.exports = {
   getAllCourses,
   getCourseDetails,
   createCourse,
   addPlaceInCourse,
   updateCourseDetail,
-  deleteCourse
+  deleteCourse,
+  deletePlaceInCourse
 };
