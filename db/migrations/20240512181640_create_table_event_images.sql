@@ -5,7 +5,7 @@ CREATE TABLE event_images(
   image_url VARCHAR(2083),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
-	CONSTRAINT event_images_event_id_FK FOREIGN KEY (event_id) REFERENCES events_and_promotions (id)
+	CONSTRAINT event_images_event_id_FK FOREIGN KEY (event_id) REFERENCES events_and_promotions (id) ON DELETE CASCADE
 );
 
 -- migrate:down

@@ -4,8 +4,8 @@ CREATE TABLE course_likes(
 	user_id INT NOT NULL,
 	course_id INT NOT NULL,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT course_likes_user_id_FK FOREIGN KEY(user_id) REFERENCES users(id),
-	CONSTRAINT course_likes_course_id_FK FOREIGN KEY(course_id) REFERENCES user_courses(id)
+	CONSTRAINT course_likes_user_id_FK FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+	CONSTRAINT course_likes_course_id_FK FOREIGN KEY(course_id) REFERENCES user_courses(id) ON DELETE CASCADE
 );
 
 -- migrate:down

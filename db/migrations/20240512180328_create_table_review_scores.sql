@@ -4,8 +4,8 @@ CREATE TABLE review_scores (
   review_id INT NOT NULL,
   place_rating_criteria_id INT NOT NULL,
   score DECIMAL(3,2) NOT NULL,
-  CONSTRAINT review_scores_review_id_FK FOREIGN KEY (review_id) REFERENCES place_reviews (id),
-  CONSTRAINT review_scores_place_rating_criteria_id_FK FOREIGN KEY (place_rating_criteria_id) REFERENCES rating_criterias (id)
+  CONSTRAINT review_scores_review_id_FK FOREIGN KEY (review_id) REFERENCES place_reviews (id) ON DELETE CASCADE,
+  CONSTRAINT review_scores_place_rating_criteria_id_FK FOREIGN KEY (place_rating_criteria_id) REFERENCES rating_criterias (id) ON DELETE
 );
 
 -- migrate:down
