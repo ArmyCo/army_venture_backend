@@ -1,4 +1,5 @@
 const { appDataSource } = require('../models/data-source');
+const userDao = require('../models/userDao');
 const jwt = require('jsonwebtoken');
 const User = appDataSource.getRepository('User');
 
@@ -42,9 +43,18 @@ const googleLogin = async (googleUserData) => {
   return { user, token };
 };
 
+const gettingUserDetails = async (userId) => {
+  const userDetail = await userDao.getUserById(userId);
+  
+  return { user: userDetail };
+};
+
+
+
 module.exports = {
   getUserByEmail,
   createUser,
   googleLogin,
   generateToken,
+  gettingUserDetails
 };
