@@ -15,6 +15,14 @@ const getCourseDetails = catchAsync(async (req, res) => {
   return res.status(200).json({ result });
 });
 
+const getCoursesWithWho = catchAsync(async (req, res) => {
+  const { withWhoId } = req.params;
+
+  const result = await courseService.gettingCoursesWithWho(withWhoId);
+
+  return res.status(200).json({ result });
+});
+
 const createCourse = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { course_title, with_who_id, description } = req.body;
@@ -94,7 +102,7 @@ const addCourseLike =  catchAsync(async (req, res) => {
     return res.status(400).json({ message: "KEY_MISSING" });
   }
   const userCheck = await courseService.addingCourseLike(userId, courseId);
-  if (userCheck == 1) {
+  if (userCheck != 1) {
     return res.status(500).json({ message: "INVALID_ACCESS_TO_THIS_COURSE" });
   }
   
@@ -120,6 +128,7 @@ const deleteCourseLike = catchAsync(async (req, res) => {
 module.exports = {
   getAllCourses,
   getCourseDetails,
+  getCoursesWithWho,
   createCourse,
   addPlaceInCourse,
   updateCourseDetail,

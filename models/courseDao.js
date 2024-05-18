@@ -6,7 +6,6 @@ const getAllCourses = async () => {
       SELECT * FROM user_courses
       `
     )
-    console.log(allCourses);
     return allCourses;
 };
 
@@ -32,6 +31,18 @@ const getPlacesesByCourseId = async (courseId) => {
       [courseId]
     )
     return places;
+}
+
+const getCoursesByWithWhoId = async (withWhoId) => {
+    const coursesWithWho = await appDataSource.query(
+      `
+      SELECT * FROM user_courses
+      WHERE with_who_id = ?
+      ORDER BY likes DESC
+      `,
+      [withWhoId]
+    )
+    return coursesWithWho;
 }
 
 const createCourse = async (userId, course_title, with_who_id, description) => {
@@ -127,7 +138,7 @@ const addCourseLike = async (userId, courseId) => {
     await queryRunner.query(
       `
       UPDATE user_courses
-      SET likes += 1
+      SET likes = likes + 1
       WHERE id = ?
       `,
       [courseId]
@@ -158,7 +169,7 @@ const deleteCourseLike = async (userId, courseId) => {
     await queryRunner.query(
       `
       UPDATE user_courses
-      SET likes -= 1
+      SET likes = likes - 1
       WHERE id = ?
       `,
       [courseId]
@@ -186,6 +197,7 @@ module.exports = {
     getAllCourses,
     getCourseById,
     getPlacesesByCourseId,
+    getCoursesByWithWhoId,
     createCourse,
     addPlaceInCourse,
     userCourseCheck,

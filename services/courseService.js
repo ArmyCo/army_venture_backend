@@ -11,6 +11,11 @@ const gettingCourseDetails = async (courseId) => {
     return { course: courseDetail, placesInCourse: placesInCourse };
 };
 
+const gettingCoursesWithWho = async (withWhoId) => {
+  const coursesWithWho = await courseDao.getCoursesByWithWhoId(withWhoId);
+  return { with: withWhoId, courses: coursesWithWho };
+}
+
 const creatingCourse = async (userId, course_title, with_who_id, description) => {
   const courseId = await courseDao.createCourse(userId, course_title, with_who_id, description);
 
@@ -20,36 +25,41 @@ const creatingCourse = async (userId, course_title, with_who_id, description) =>
 const addingPlaceInCourse = async (userId, courseId, placeId, placeLike) => {
   const userCheck = await courseDao.userCourseCheck(userId, courseId);
   if(userCheck != 1) {
-    return userCheck;
+    return 0;
   }else{
     await courseDao.addPlaceInCourse(courseId, placeId, placeLike);
+    return 1;
   }
 }
 
 const updatingCourseDetail = async (userId, courseId, course_title, with_who_id, description) => {
   const userCheck = await courseDao.userCourseCheck(userId, courseId);
   if(userCheck != 1) {
-    return userCheck;
+    return 0;
   }else{
     await courseDao.updateCourseDetail(courseId, course_title, with_who_id, description);
+    return 1;
   }
 }
 
 const deletingCourse = async (userId, courseId) => {
   const userCheck = await courseDao.userCourseCheck(userId, courseId);
+  console.log(userCheck);
   if(userCheck != 1) {
-    return userCheck;
+    return 0;
   }else{
     await courseDao.deleteCourse(courseId);
+    return 1;
   }
 }
 
 const deletingPlaceInCourse = async (userId, courseId, placeId) => {
   const userCheck = await courseDao.userCourseCheck(userId, courseId);
   if(userCheck != 1) {
-    return userCheck;
+    return 0;
   }else{
     await courseDao.deletePlaceInCourse(courseId, placeId);
+    return 1;
   }
 }
 
@@ -57,18 +67,21 @@ const addingCourseLike = async (userId, courseId) => {
   const userCheck = await courseDao.userCourseCheck(userId, courseId);
   const userLikedCheck = await courseDao.userLikedCheck(userId, courseId);
   if(userCheck == 1 || userLikedCheck == 1) {
-    return 1;
+    return 0;
   }else{
     await courseDao.addCourseLike(userId, courseId);
+    return 1;
   }
 }
 
 const deletingCourseLike = async (userId, courseId) => {
   const userLikedCheck = await courseDao.userLikedCheck(userId, courseId);
-  if(userLikedCheck == 0) {
-    return userLikedCheck;
+
+  if(userLikedCheck != 1) {
+    return 0;
   }else{
     await courseDao.deleteCourseLike(userId, courseId);
+    return 1;
   }
 }
 
@@ -76,6 +89,7 @@ const deletingCourseLike = async (userId, courseId) => {
 module.exports = {
   gettingAllCourses,
   gettingCourseDetails,
+  gettingCoursesWithWho,
   creatingCourse,
   addingPlaceInCourse,
   updatingCourseDetail,
