@@ -9,6 +9,14 @@ const getUserDetails = catchAsync(async (req, res) => {
   return res.status(200).json({ result });
 });
 
+const updateUserDetails = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { nickname, profile_image, introduction } = req.body;
+
+  const result = await userService.updatingUserDetails(userId, nickname, profile_image, introduction);
+
+  return res.status(200).json({ result });
+});
 
 module.exports = {
   getUserDetails
