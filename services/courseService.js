@@ -11,6 +11,11 @@ const gettingCourseDetails = async (courseId) => {
     return { course: courseDetail, placesInCourse: placesInCourse };
 };
 
+const gettingCoursesWithWho = async (withWhoId) => {
+  const coursesWithWho = await courseDao.getCoursesByWithWhoId(withWhoId);
+  return { with: withWhoId, courses: coursesWithWho };
+}
+
 const creatingCourse = async (userId, course_title, with_who_id, description) => {
   const courseId = await courseDao.createCourse(userId, course_title, with_who_id, description);
 
@@ -84,6 +89,7 @@ const deletingCourseLike = async (userId, courseId) => {
 module.exports = {
   gettingAllCourses,
   gettingCourseDetails,
+  gettingCoursesWithWho,
   creatingCourse,
   addingPlaceInCourse,
   updatingCourseDetail,

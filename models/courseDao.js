@@ -33,6 +33,18 @@ const getPlacesesByCourseId = async (courseId) => {
     return places;
 }
 
+const getCoursesByWithWhoId = async (withWhoId) => {
+    const coursesWithWho = await appDataSource.query(
+      `
+      SELECT * FROM user_courses
+      WHERE with_who_id = ?
+      ORDER BY likes DESC
+      `,
+      [withWhoId]
+    )
+    return coursesWithWho;
+}
+
 const createCourse = async (userId, course_title, with_who_id, description) => {
     const result = await appDataSource.query(
       `
@@ -185,6 +197,7 @@ module.exports = {
     getAllCourses,
     getCourseById,
     getPlacesesByCourseId,
+    getCoursesByWithWhoId,
     createCourse,
     addPlaceInCourse,
     userCourseCheck,
