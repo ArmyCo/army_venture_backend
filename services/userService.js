@@ -49,12 +49,24 @@ const gettingUserDetails = async (userId) => {
   return { user: userDetail };
 };
 
+const updatingUserDetails = async (userId, nickname, user_army_number, phone_number, belonged_unit_id) => {
+  const userDetail = await userDao.updateUserById(userId, nickname, user_army_number, phone_number, belonged_unit_id);
 
+  return { user: userDetail };
+}
+
+const deletingUserDetails = async (userId) => {
+  await userDao.deleteUserById(userId);
+
+  return { message: "user deleted" };
+}
 
 module.exports = {
   getUserByEmail,
   createUser,
   googleLogin,
   generateToken,
-  gettingUserDetails
+  gettingUserDetails,
+  updatingUserDetails,
+  deletingUserDetails
 };
