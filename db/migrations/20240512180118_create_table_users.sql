@@ -4,6 +4,7 @@ CREATE TABLE users(
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
 	name CHAR(50) NOT NULL,
+	nickname VARCHAR(50) UNIQUE NOT NULL,
 	gender CHAR(8) NOT NULL,
 	birth DATETIME NOT NULL,
 	user_army_number CHAR(20) NOT NULL,
