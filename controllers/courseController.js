@@ -94,7 +94,7 @@ const addCourseLike =  catchAsync(async (req, res) => {
     return res.status(400).json({ message: "KEY_MISSING" });
   }
   const userCheck = await courseService.addingCourseLike(userId, courseId);
-  if (userCheck == 1) {
+  if (userCheck != 1) {
     return res.status(500).json({ message: "INVALID_ACCESS_TO_THIS_COURSE" });
   }
   

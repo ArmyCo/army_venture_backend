@@ -6,7 +6,6 @@ const getAllCourses = async () => {
       SELECT * FROM user_courses
       `
     )
-    console.log(allCourses);
     return allCourses;
 };
 
@@ -127,7 +126,7 @@ const addCourseLike = async (userId, courseId) => {
     await queryRunner.query(
       `
       UPDATE user_courses
-      SET likes += 1
+      SET likes = likes + 1
       WHERE id = ?
       `,
       [courseId]
@@ -158,7 +157,7 @@ const deleteCourseLike = async (userId, courseId) => {
     await queryRunner.query(
       `
       UPDATE user_courses
-      SET likes -= 1
+      SET likes = likes - 1
       WHERE id = ?
       `,
       [courseId]
