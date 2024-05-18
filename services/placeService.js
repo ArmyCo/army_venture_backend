@@ -17,34 +17,6 @@ const gettingHolidays = async (placeId) => {
   return { "message": "This place is open in hollidays" };
 };
 
-// const addReview = async (userId, placeId, title, content, visitedDate, scores) => {
-//   console.log("Scores in placeService addReview:", scores);
-//   console.log("Place ID:", placeId);
-
-//   const placeExists = await placeDao.checkPlaceExists(placeId);
-//   if (!placeExists) {
-//     throw new Error("Place not found");
-//   }
-
-//   const reviewId = await placeDao.addReview(userId, placeId, title, content, visitedDate, scores);
-//   const avergeRating = await placeDao.calculateReviewRating(placeId);
-//   return {reviewId, avergeRating};
-// };
-
-
-// const updateReview = async (reviewId, userId, title, content, visitedDate, scores) => {
-//   await placeDao.updateReview(reviewId, userId, title, content, visitedDate);
-//   await placeDao.updateReviewScores(reviewId, scores);  // 기존 평점 삭제 후 새로운 평점 추가
-//   const review = await placeDao.getReviewById(reviewId);
-//   const avergeRating = await placeDao.calculateReviewRating(reviewId);
-//   return {review, avergeRating};
-// };
-
-// const deleteReview = async (reviewId, userId) => {
-//   await placeDao.deleteReview(reviewId, userId);
-//   const avergeRating = await placeDao.calculateReviewRating(reviewId);
-//   return avergeRating;
-// };
 const addReview = async (userId, placeId, title, content, visitedDate, scores) => {
   console.log("Scores in placeService addReview:", scores);
   console.log("Place ID:", placeId);
