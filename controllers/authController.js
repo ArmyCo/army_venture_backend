@@ -100,8 +100,11 @@ const signupRedirect = async (req, res) => {
 
 const googleLogin = async (req, res) => {
   try {
-    const googleUserData = req.params; // 프론트엔드에서 구글 OAuth로 받아온 사용자 데이터
-
+    const token = req.query.authorization; // URL 쿼리에서 토큰 추출
+    if (!token) {
+      return res.status(401).json({ message: 'Authorization token is missing' });
+    }
+    
     // 토큰 검증 및 디코드
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(`Decoded token data: ${JSON.stringify(decoded)}`);
