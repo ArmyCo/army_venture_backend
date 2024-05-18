@@ -11,13 +11,23 @@ const getUserDetails = catchAsync(async (req, res) => {
 
 const updateUserDetails = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const { nickname, profile_image, introduction } = req.body;
+  const { nickname, user_army_number, phone_number, belonged_unit_id } = req.body;
 
-  const result = await userService.updatingUserDetails(userId, nickname, profile_image, introduction);
+  const result = await userService.updatingUserDetails(userId, nickname, user_army_number, phone_number, belonged_unit_id);
 
   return res.status(200).json({ result });
 });
 
+const deleteUserDetails = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+
+  await userService.deletingUserDetails(userId);
+
+  return res.status(200).json({ message: "회원 탈퇴가 완료되었습니다."});
+});
+
 module.exports = {
-  getUserDetails
+  getUserDetails,
+  updateUserDetails,
+  deleteUserDetails
 };
