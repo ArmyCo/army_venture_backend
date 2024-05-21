@@ -27,35 +27,42 @@ const addReview = async (userId, placeId, title, content, visitedDate, scores) =
   }
 
   const reviewId = await placeDao.addReview(userId, placeId, title, content, visitedDate);
-  await placeDao.addReviewScores(reviewId, placeId, scores); // placeId 추가 
+  await placeDao.addReviewScores(reviewId, placeId, scores);
 
   for (const score of scores) {
     await placeDao.updateRatingCriterias(placeId, score.ratingCriteriaId, score.score);
   }
 
   const averageRating = await placeDao.calculateReviewRating(placeId);
+  console.log("Average rating:", averageRating); // 평균 평점 로그 추가
   return { reviewId, averageRating };
 };
 
 const updateReview = async (reviewId, userId, title, content, visitedDate, scores) => {
   await placeDao.updateReview(reviewId, userId, title, content, visitedDate);
-  await placeDao.updateReviewScores(reviewId, scores);  // 기존 평점 삭제 후 새로운 평점 추가
+  const placeId = (await placeDao.getReviewById(reviewId)).place_id;
+  await placeDao.updateReviewScores(reviewId, placeId, scores);
 
-  const placeId = (await placeDao.getPlaceById(reviewId))[0].place_id;
   for (const score of scores) {
     await placeDao.updateRatingCriterias(placeId, score.ratingCriteriaId, score.score);
   }
 
   const averageRating = await placeDao.calculateReviewRating(placeId);
+  console.log("Average rating:", averageRating); // 평균 평점 로그 추가
   return averageRating;
 };
 
+
 const deleteReview = async (reviewId, userId) => {
-  const placeId = (await placeDao.getPlaceById(reviewId))[0].place_id;
+  const review = await placeDao.getReviewById(reviewId);
+  const placeId = review.place_id;
+
   await placeDao.deleteReview(reviewId, userId);
+
   const averageRating = await placeDao.calculateReviewRating(placeId);
   return averageRating;
 };
+
 module.exports = {
   gettingPlaceDetails,
   gettingHolidays,
