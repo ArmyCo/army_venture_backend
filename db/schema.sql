@@ -23,8 +23,8 @@ CREATE TABLE `course_likes` (
   PRIMARY KEY (`id`),
   KEY `course_likes_user_id_FK` (`user_id`),
   KEY `course_likes_course_id_FK` (`course_id`),
-  CONSTRAINT `course_likes_course_id_FK` FOREIGN KEY (`course_id`) REFERENCES `user_courses` (`id`),
-  CONSTRAINT `course_likes_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `course_likes_course_id_FK` FOREIGN KEY (`course_id`) REFERENCES `user_courses` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `course_likes_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,7 +42,7 @@ CREATE TABLE `event_images` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `event_images_event_id_FK` (`event_id`),
-  CONSTRAINT `event_images_event_id_FK` FOREIGN KEY (`event_id`) REFERENCES `events_and_promotions` (`id`)
+  CONSTRAINT `event_images_event_id_FK` FOREIGN KEY (`event_id`) REFERENCES `events_and_promotions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,6 +83,19 @@ CREATE TABLE `holidays` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `other_withdraw_reasons`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `other_withdraw_reasons` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `place_images`
 --
 
@@ -97,7 +110,7 @@ CREATE TABLE `place_images` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `place_images_place_id_FK` (`place_id`),
-  CONSTRAINT `place_images_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
+  CONSTRAINT `place_images_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -112,12 +125,12 @@ CREATE TABLE `place_rating_criterias` (
   `place_id` int NOT NULL,
   `rating_criteria_id` int NOT NULL,
   `review_count` int NOT NULL DEFAULT '0',
-  `score_avg` decimal(3,2) NOT NULL,
+  `score_avg` decimal(3,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `place_rating_criterias_place_id_FK` (`place_id`),
   KEY `place_rating_criterias_rating_criteria_id_FK` (`rating_criteria_id`),
-  CONSTRAINT `place_rating_criterias_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`),
-  CONSTRAINT `place_rating_criterias_rating_criteria_id_FK` FOREIGN KEY (`rating_criteria_id`) REFERENCES `rating_criterias` (`id`)
+  CONSTRAINT `place_rating_criterias_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `place_rating_criterias_rating_criteria_id_FK` FOREIGN KEY (`rating_criteria_id`) REFERENCES `rating_criterias` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,8 +152,8 @@ CREATE TABLE `place_reviews` (
   PRIMARY KEY (`id`),
   KEY `place_reviews_user_id_FK` (`user_id`),
   KEY `place_reviews_place_id_FK` (`place_id`),
-  CONSTRAINT `place_reviews_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`),
-  CONSTRAINT `place_reviews_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `place_reviews_place_id_FK` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `place_reviews_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -198,7 +211,7 @@ CREATE TABLE `places_in_user_courses` (
   PRIMARY KEY (`id`),
   KEY `places_in_user_courses_user_courses_id_FK` (`user_courses_id`),
   KEY `places_in_user_courses` (`place_id`),
-  CONSTRAINT `places_in_user_courses` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `places_in_user_courses` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`),
   CONSTRAINT `places_in_user_courses_user_courses_id_FK` FOREIGN KEY (`user_courses_id`) REFERENCES `user_courses` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -230,8 +243,8 @@ CREATE TABLE `review_scores` (
   PRIMARY KEY (`id`),
   KEY `review_scores_review_id_FK` (`review_id`),
   KEY `review_scores_place_rating_criteria_id_FK` (`place_rating_criteria_id`),
-  CONSTRAINT `review_scores_place_rating_criteria_id_FK` FOREIGN KEY (`place_rating_criteria_id`) REFERENCES `rating_criterias` (`id`),
-  CONSTRAINT `review_scores_review_id_FK` FOREIGN KEY (`review_id`) REFERENCES `place_reviews` (`id`)
+  CONSTRAINT `review_scores_place_rating_criteria_id_FK` FOREIGN KEY (`place_rating_criteria_id`) REFERENCES `rating_criterias` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `review_scores_review_id_FK` FOREIGN KEY (`review_id`) REFERENCES `place_reviews` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -299,7 +312,7 @@ CREATE TABLE `user_courses` (
   PRIMARY KEY (`id`),
   KEY `user_courses_user_id_FK` (`user_id`),
   KEY `user_courses_with_who_id_FK` (`with_who_id`),
-  CONSTRAINT `user_courses_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_courses_user_id_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_courses_with_who_id_FK` FOREIGN KEY (`with_who_id`) REFERENCES `with_who` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -328,6 +341,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `name` char(50) NOT NULL,
+  `nickname` varchar(50) NOT NULL,
   `gender` char(8) NOT NULL,
   `birth` datetime NOT NULL,
   `user_army_number` char(20) NOT NULL,
@@ -337,7 +351,12 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `IDX_97672ac88f789774dd47f7c8be` (`email`)
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `nickname` (`nickname`),
+  KEY `users_users_status_id_FK` (`user_status_id`),
+  KEY `users_belonged_unit_id_FK` (`belonged_unit_id`),
+  CONSTRAINT `users_belonged_unit_id_FK` FOREIGN KEY (`belonged_unit_id`) REFERENCES `units` (`id`),
+  CONSTRAINT `users_users_status_id_FK` FOREIGN KEY (`user_status_id`) REFERENCES `user_statuses` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -350,6 +369,20 @@ CREATE TABLE `users` (
 CREATE TABLE `with_who` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `withdraw_reasons`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `withdraw_reasons` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `count` int DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -392,5 +425,7 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20240512181646'),
   ('20240512181931'),
   ('20240515140423'),
-  ('20240516032901');
+  ('20240516032901'),
+  ('20240521002918'),
+  ('20240521003421');
 UNLOCK TABLES;
