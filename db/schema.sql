@@ -198,8 +198,8 @@ CREATE TABLE `places_in_user_courses` (
   PRIMARY KEY (`id`),
   KEY `places_in_user_courses_user_courses_id_FK` (`user_courses_id`),
   KEY `places_in_user_courses` (`place_id`),
-  CONSTRAINT `places_in_user_courses` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`),
-  CONSTRAINT `places_in_user_courses_user_courses_id_FK` FOREIGN KEY (`user_courses_id`) REFERENCES `user_courses` (`id`)
+  CONSTRAINT `places_in_user_courses` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `places_in_user_courses_user_courses_id_FK` FOREIGN KEY (`user_courses_id`) REFERENCES `user_courses` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -337,11 +337,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  KEY `users_users_status_id_FK` (`user_status_id`),
-  KEY `users_belonged_unit_id_FK` (`belonged_unit_id`),
-  CONSTRAINT `users_belonged_unit_id_FK` FOREIGN KEY (`belonged_unit_id`) REFERENCES `units` (`id`),
-  CONSTRAINT `users_users_status_id_FK` FOREIGN KEY (`user_status_id`) REFERENCES `user_statuses` (`id`)
+  UNIQUE KEY `IDX_97672ac88f789774dd47f7c8be` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
