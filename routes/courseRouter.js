@@ -4,6 +4,7 @@ const courseController = require('../controllers/courseController');
 const { loginRequired } = require('../utils/auth');
 
 router.get('/all', loginRequired, courseController.getAllCourses);
+router.get('/my', loginRequired, courseController.getMyCourses);
 router.get('/:courseId', loginRequired, courseController.getCourseDetails);
 router.get('/with/:withWhoId', loginRequired, courseController.getCoursesWithWho);
 
