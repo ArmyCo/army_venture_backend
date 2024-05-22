@@ -59,6 +59,14 @@ const getReviewById = async (reviewId) => {
   return review[0];
 };
 
+const getMyPlaceReviews = async (userId) => {
+  const reviews = await appDataSource.query(
+    `SELECT * FROM place_reviews WHERE user_id = ?`,
+    [userId]
+  );
+  return reviews;
+};
+
 const addReview = async (userId, placeId, title, content, visitedDate, scores) => {
   const queryRunner = appDataSource.createQueryRunner();
   await queryRunner.connect();
@@ -348,6 +356,7 @@ module.exports = {
     checkPlaceCloseInHollidays,
     getHollidaysByPlaceId,
     getReviewsByPlaceId,
+    getMyPlaceReviews,
     addReview,
     updateReview,
     deleteReview,
