@@ -20,6 +20,19 @@ const getMyCourses = async (userId) => {
     return myCourses;
 }
 
+const getMyLikedCourses = async (userId) => {
+    const myLikedCourses = await appDataSource.query(
+      `
+      SELECT * 
+      FROM user_courses uc
+      INNER JOIN course_likes cl ON uc.id = cl.course_id
+      WHERE cl.user_id = ?
+      `,
+      [userId]
+    )
+    return myLikedCourses;
+}
+
 const getCourseById = async (courseId) => {
     const courseDetail = await appDataSource.query(
       `
@@ -207,6 +220,7 @@ const deleteCourseLike = async (userId, courseId) => {
 module.exports = {
     getAllCourses,
     getMyCourses,
+    getMyLikedCourses,
     getCourseById,
     getPlacesesByCourseId,
     getCoursesByWithWhoId,

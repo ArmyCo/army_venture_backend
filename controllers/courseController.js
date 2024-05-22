@@ -15,6 +15,14 @@ const getMyCourses = catchAsync(async (req, res) => {
   return res.status(200).json({ result });
 });
 
+const getMyLikedCourses = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+
+  const result = await courseService.gettingMyLikedCourses(userId);
+
+  return res.status(200).json({ result });
+});
+
 const getCourseDetails = catchAsync(async (req, res) => {
   const { courseId } = req.params;
 
@@ -136,6 +144,7 @@ const deleteCourseLike = catchAsync(async (req, res) => {
 module.exports = {
   getAllCourses,
   getMyCourses,
+  getMyLikedCourses,
   getCourseDetails,
   getCoursesWithWho,
   createCourse,
