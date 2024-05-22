@@ -20,8 +20,9 @@ const updateUserDetails = catchAsync(async (req, res) => {
 
 const deleteUserDetails = catchAsync(async (req, res) => {
   const userId = req.user.id;
+  const { withdrawReasonId, reasonDetail } = req.body;
 
-  await userService.deletingUserDetails(userId);
+  await userService.deletingUserDetails(userId, withdrawReasonId, reasonDetail);
 
   return res.status(200).json({ message: "회원 탈퇴가 완료되었습니다."});
 });
