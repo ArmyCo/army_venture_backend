@@ -55,8 +55,12 @@ const updatingUserDetails = async (userId, nickname, user_army_number, phone_num
   return { user: userDetail };
 }
 
-const deletingUserDetails = async (userId) => {
-  await userDao.deleteUserById(userId);
+const deletingUserDetails = async (userId, withdrawReasonId, reasonDetail) => {
+  if (withdrawReasonId == 1){
+    await userDao.deleteUserByIdOtherReason(userId, withdrawReasonId, reasonDetail);
+  } else{
+    await userDao.deleteUserById(userId, withdrawReasonId);
+  }
 
   return { message: "user deleted" };
 }
