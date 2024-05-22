@@ -7,6 +7,11 @@ const gettingPlaceDetails = async (placeId) => {
     return { place: placeDetail, placeImages: placeImages, ratings: placeRatings};
 };
 
+const getMyPlaceReviews = async (userId) => {
+  const myPlaceReviews = await placeDao.getMyReviews(userId);
+  return { myReviews: myPlaceReviews };
+};
+
 const gettingHolidays = async (placeId) => {
   const holidays = await placeDao.getHollidaysByPlaceId(placeId);
   const closeInHollidays = await placeDao.checkPlaceCloseInHollidays(placeId);
@@ -65,6 +70,7 @@ const deleteReview = async (reviewId, userId) => {
 
 module.exports = {
   gettingPlaceDetails,
+  getMyPlaceReviews,
   gettingHolidays,
   addReview,
   updateReview,

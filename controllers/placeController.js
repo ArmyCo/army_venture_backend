@@ -37,6 +37,17 @@ const getPlaceReviews = async (req, res) => {
   }
 };
 
+const getMyPlaceReviews = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const myReviews = await placeService.getMyReviews(userId);
+    res.status(200).json(myReviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const addReview = async (req, res) => {
   console.log("Request body in placeController addReview:", req.body);
 
@@ -79,6 +90,7 @@ module.exports = {
   getPlaceHollidays,
   getPlaceById,
   getPlaceReviews,
+  getMyPlaceReviews,
   addReview,
   updateReview,
   deleteReview
