@@ -1,6 +1,7 @@
 -- migrate:up
 CREATE TABLE places_in_user_courses(
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		place_order INT NOT NULL,
 		user_courses_id INT NOT NULL,
 		place_id INT NOT NULL,
 		place_like INT DEFAULT 0,

@@ -205,6 +205,7 @@ CREATE TABLE `places` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `places_in_user_courses` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `place_order` int NOT NULL,
   `user_courses_id` int NOT NULL,
   `place_id` int NOT NULL,
   `place_like` int DEFAULT '0',
