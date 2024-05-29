@@ -86,8 +86,15 @@ const signupRedirect = async (req, res) => {
     if (!user) {
       user = await userService.createUser({
         email,
-        name,
-        password: 'oauth2password', // 추가 정보 필요시 수정
+        password: 'oauth2password', // 기본 비밀번호 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        name: name || '',
+        gender: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        birth: new Date(), // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        user_army_number: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        user_status_id: 1, // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        phone_number: 'unknown', // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        belonged_unit_id: 1, // 기본 값 설정, 필요시 사용자로부터 추가 정보 요청 필요
+        created_at: new Date(),
       });
     }
 
