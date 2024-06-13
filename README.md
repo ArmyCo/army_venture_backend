@@ -2,6 +2,7 @@
 군인을 위한 장소 추천, 리뷰 서비스
 
 # ERD
+![ERD_img](./etc/ArmyCo_ERD.png)
 
 # API 명세
 | 인덱스   | 제목                | method | API Path                           | 담당자 | 개발현황  | 토큰 |
